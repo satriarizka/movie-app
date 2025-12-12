@@ -74,6 +74,7 @@ movie-app/
     ├── mailer/         # Email sender (SMTP/Gomail)
     ├── utils/          # Helper functions (Response, JWT)
     └── validator/      # Input validation logic
+```
 
 ## ⚡ Installation & Setup
 
