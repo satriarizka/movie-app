@@ -1,0 +1,1 @@
+ALTER TABLE transactions ADD COLUMN reminder_sent BOOLEAN DEFAULT FALSE;

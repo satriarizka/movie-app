@@ -1,0 +1,44 @@
+ 
+# --- Binaries & Build ---
+/bin/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+# Nama binary default jika build tanpa flag -o
+main
+movie-app
+
+# --- Development & Logs ---
+*.log
+tmp/
+coverage.out
+coverage.html
+debug
+
+# --- Dependency ---
+vendor/
+
+# --- IDE & OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- Environment Variables ---
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Kecuali .env.example 
+!.env.example
+
+# --- Docker ---
+# Jika ada override lokal yang tidak ingin dicommit
+docker-compose.override.yml

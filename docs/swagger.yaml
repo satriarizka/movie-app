@@ -1,0 +1,1137 @@
+basePath: /api/v1
+definitions:
+  movie-app_internal_delivery_http_dto_request.BookTicketRequest:
+    properties:
+      promo_code:
+        type: string
+      schedule_id:
+        type: string
+      seat_ids:
+        description: Array of Seat UUID
+        items:
+          type: string
+        minItems: 1
+        type: array
+    required:
+    - schedule_id
+    - seat_ids
+    type: object
+  movie-app_internal_delivery_http_dto_request.CreateMovieRequest:
+    properties:
+      description:
+        type: string
+      duration:
+        description: Menit
+        minimum: 1
+        type: integer
+      genre:
+        type: string
+      poster_url:
+        type: string
+      title:
+        type: string
+    required:
+    - description
+    - duration
+    - genre
+    - poster_url
+    - title
+    type: object
+  movie-app_internal_delivery_http_dto_request.CreatePromoRequest:
+    properties:
+      code:
+        type: string
+      discount_type:
+        enum:
+        - percentage
+        - fixed
+        type: string
+      discount_value:
+        type: number
+      valid_until:
+        type: string
+    required:
+    - code
+    - discount_type
+    - discount_value
+    - valid_until
+    type: object
+  movie-app_internal_delivery_http_dto_request.CreateScheduleRequest:
+    properties:
+      end_time:
+        type: string
+      movie_id:
+        type: string
+      price:
+        minimum: 0
+        type: number
+      start_time:
+        type: string
+      studio_id:
+        type: string
+    required:
+    - end_time
+    - movie_id
+    - price
+    - start_time
+    - studio_id
+    type: object
+  movie-app_internal_delivery_http_dto_request.CreateStudioRequest:
+    properties:
+      capacity:
+        minimum: 1
+        type: integer
+      name:
+        type: string
+    required:
+    - capacity
+    - name
+    type: object
+  movie-app_internal_delivery_http_dto_request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  movie-app_internal_delivery_http_dto_request.PayTransactionRequest:
+    properties:
+      payment_method:
+        enum:
+        - credit_card
+        - e_wallet
+        - qris
+        type: string
+    required:
+    - payment_method
+    type: object
+  movie-app_internal_delivery_http_dto_request.RegisterRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  movie-app_internal_delivery_http_dto_request.UpdatePromoRequest:
+    properties:
+      code:
+        type: string
+      discount_type:
+        enum:
+        - percentage
+        - fixed
+        type: string
+      discount_value:
+        type: number
+      valid_until:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_request.UpdateScheduleRequest:
+    properties:
+      end_time:
+        type: string
+      movie_id:
+        type: string
+      price:
+        minimum: 0
+        type: number
+      start_time:
+        type: string
+      studio_id:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_request.UpdateStudioRequest:
+    properties:
+      capacity:
+        minimum: 1
+        type: integer
+      name:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_response.AuthResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_response.DailyRevenueResponse:
+    properties:
+      date:
+        type: string
+      total_amount:
+        type: number
+      transaction_count:
+        type: integer
+    type: object
+  movie-app_internal_delivery_http_dto_response.MovieResponse:
+    properties:
+      description:
+        type: string
+      duration:
+        type: integer
+      genre:
+        type: string
+      id:
+        type: string
+      poster_url:
+        type: string
+      title:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_response.ScheduleResponse:
+    properties:
+      end_time:
+        type: string
+      id:
+        type: string
+      movie:
+        $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.MovieResponse'
+      price:
+        type: number
+      start_time:
+        type: string
+      studio:
+        $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.StudioResponse'
+    type: object
+  movie-app_internal_delivery_http_dto_response.SeatAvailabilityResponse:
+    properties:
+      id:
+        type: string
+      is_booked:
+        description: True jika sudah ada yang punya
+        type: boolean
+      row_code:
+        type: string
+      seat_number:
+        type: integer
+    type: object
+  movie-app_internal_delivery_http_dto_response.StudioResponse:
+    properties:
+      capacity:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  movie-app_internal_delivery_http_dto_response.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+    type: object
+  movie-app_internal_domain.Promo:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      discount_type:
+        description: '''percentage'' or ''fixed'''
+        type: string
+      discount_value:
+        type: number
+      id:
+        type: string
+      updated_at:
+        type: string
+      valid_until:
+        type: string
+    type: object
+  movie-app_internal_domain.Seat:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      row_code:
+        description: A, B, C
+        type: string
+      seat_number:
+        description: 1, 2, 3
+        type: integer
+      studio_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  movie-app_internal_domain.Ticket:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      schedule_id:
+        type: string
+      seat:
+        allOf:
+        - $ref: '#/definitions/movie-app_internal_domain.Seat'
+        description: Relations
+      seat_id:
+        type: string
+      transaction_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  movie-app_internal_domain.Transaction:
+    properties:
+      created_at:
+        type: string
+      discount_amount:
+        type: number
+      expires_at:
+        type: string
+      final_amount:
+        description: Total setelah diskon
+        type: number
+      id:
+        type: string
+      payment_method:
+        type: string
+      promo:
+        $ref: '#/definitions/movie-app_internal_domain.Promo'
+      promo_id:
+        description: '--- Tambahan Field Promo ---'
+        type: string
+      reminder_sent:
+        type: boolean
+      status:
+        $ref: '#/definitions/movie-app_internal_enums.TransactionStatus'
+      tickets:
+        items:
+          $ref: '#/definitions/movie-app_internal_domain.Ticket'
+        type: array
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/movie-app_internal_domain.User'
+        description: Relations
+      user_id:
+        type: string
+    type: object
+  movie-app_internal_domain.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/movie-app_internal_enums.Role'
+        description: Menggunakan Enum
+      updated_at:
+        type: string
+    type: object
+  movie-app_internal_enums.Role:
+    enum:
+    - admin
+    - user
+    type: string
+    x-enum-varnames:
+    - RoleAdmin
+    - RoleUser
+  movie-app_internal_enums.TransactionStatus:
+    enum:
+    - pending
+    - paid
+    - cancelled
+    - failed
+    type: string
+    x-enum-varnames:
+    - TransactionPending
+    - TransactionPaid
+    - TransactionCancel
+    - TransactionFailed
+  movie-app_pkg_utils.APIResponse:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API Server for Movie Booking Application.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Bioskop API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password to get JWT token
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.AuthResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      summary: Login User
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      summary: Register new user
+      tags:
+      - Auth
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: Get list of movies (Public)
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.MovieResponse'
+                  type: array
+              type: object
+      summary: Get all movies
+      tags:
+      - Movies
+    post:
+      consumes:
+      - application/json
+      description: Add a new movie (Admin only)
+      parameters:
+      - description: Movie Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.CreateMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.MovieResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create new movie
+      tags:
+      - Movies
+  /promos:
+    get:
+      consumes:
+      - application/json
+      description: Get list of active promos (Admin only)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_domain.Promo'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get all promos
+      tags:
+      - Promos
+    post:
+      consumes:
+      - application/json
+      description: Add a new promo code (Admin only)
+      parameters:
+      - description: Promo Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.CreatePromoRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_domain.Promo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create new promo
+      tags:
+      - Promos
+  /promos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete/Remove a promo (Admin only)
+      parameters:
+      - description: Promo UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete promo
+      tags:
+      - Promos
+    put:
+      consumes:
+      - application/json
+      description: Update promo details (Admin only)
+      parameters:
+      - description: Promo UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.UpdatePromoRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_domain.Promo'
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Update promo
+      tags:
+      - Promos
+  /reports/revenue:
+    get:
+      consumes:
+      - application/json
+      description: See daily or monthly revenue (Admin Only)
+      parameters:
+      - description: 'Report mode: ''day'' or ''month'''
+        in: query
+        name: mode
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.DailyRevenueResponse'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get revenue report
+      tags:
+      - Reports
+  /reports/revenue/export:
+    get:
+      description: Download revenue report as CSV file (Admin Only)
+      parameters:
+      - description: 'Report mode: ''day'' or ''month'''
+        in: query
+        name: mode
+        type: string
+      produces:
+      - text/csv
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+      security:
+      - BearerAuth: []
+      summary: Export revenue CSV
+      tags:
+      - Reports
+  /schedules:
+    get:
+      consumes:
+      - application/json
+      description: Get list of schedules with pagination (Public)
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.ScheduleResponse'
+                  type: array
+              type: object
+      summary: Get all schedules
+      tags:
+      - Schedules
+    post:
+      consumes:
+      - application/json
+      description: Add a new movie schedule (Admin only)
+      parameters:
+      - description: Schedule Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.CreateScheduleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.ScheduleResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "409":
+          description: Conflict / Schedule Overlap
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create new schedule
+      tags:
+      - Schedules
+  /schedules/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a schedule (Admin only)
+      parameters:
+      - description: Schedule UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete schedule
+      tags:
+      - Schedules
+    put:
+      consumes:
+      - application/json
+      description: Update existing schedule details (Admin only)
+      parameters:
+      - description: Schedule UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.UpdateScheduleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.ScheduleResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update schedule
+      tags:
+      - Schedules
+  /studios:
+    get:
+      consumes:
+      - application/json
+      description: Get list of studios with pagination
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.StudioResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all studios
+      tags:
+      - Studios
+    post:
+      consumes:
+      - application/json
+      description: Create a new studio (Admin only)
+      parameters:
+      - description: Studio Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.CreateStudioRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.StudioResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Create new studio
+      tags:
+      - Studios
+  /studios/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a studio (Admin only)
+      parameters:
+      - description: Studio UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete studio
+      tags:
+      - Studios
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific studio
+      parameters:
+      - description: Studio UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.StudioResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Get studio by ID
+      tags:
+      - Studios
+    put:
+      consumes:
+      - application/json
+      description: Update studio details (Admin only)
+      parameters:
+      - description: Studio UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.UpdateStudioRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.StudioResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Update studio
+      tags:
+      - Studios
+  /tickets/book:
+    post:
+      consumes:
+      - application/json
+      description: Book seats for a specific schedule
+      parameters:
+      - description: Booking Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.BookTicketRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/movie-app_internal_domain.Transaction'
+              type: object
+        "409":
+          description: Conflict / Double Booking
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Book tickets
+      tags:
+      - Ticketing
+  /tickets/me:
+    get:
+      consumes:
+      - application/json
+      description: Get all transaction history for current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_domain.Transaction'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get booking history
+      tags:
+      - Ticketing
+  /tickets/schedules/{id}/seats:
+    get:
+      consumes:
+      - application/json
+      description: Check which seats are booked or free for a schedule
+      parameters:
+      - description: Schedule UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/movie-app_internal_delivery_http_dto_response.SeatAvailabilityResponse'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: Get available seats
+      tags:
+      - Ticketing
+  /transactions/{id}/cancel:
+    post:
+      consumes:
+      - application/json
+      description: Cancel a pending transaction manually
+      parameters:
+      - description: Transaction UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Cancel transaction
+      tags:
+      - Transactions
+  /transactions/{id}/pay:
+    post:
+      consumes:
+      - application/json
+      description: Pay for a pending transaction
+      parameters:
+      - description: Transaction UUID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Payment Method
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/movie-app_internal_delivery_http_dto_request.PayTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+        "400":
+          description: Already paid / Validation error
+          schema:
+            $ref: '#/definitions/movie-app_pkg_utils.APIResponse'
+      security:
+      - BearerAuth: []
+      summary: Pay transaction
+      tags:
+      - Transactions
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
